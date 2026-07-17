@@ -2,6 +2,7 @@ from core.hashing import calculate_hash
 from core.ioc import scan_iocs
 from core.metadata import analyze_metadata
 from core.signature import verify_signature
+from core.timeline import generate_timeline
 
 # Global Constants
 ALGORITHMS = {"1": "md5", "2": "sha1", "3": "sha256", "4": "sha512"}
@@ -22,7 +23,8 @@ def display_menu():
     print("2. Metadata Analysis")
     print("3. File Signature Verification")
     print("4. IOC Scanner")
-    print("5. Exit")
+    print("5. Timeline Generator")
+    print("6. Exit")
     print("===============================")
 
 
@@ -48,7 +50,6 @@ def run_hash():
     try:
         hash_value = calculate_hash(file_path, selected_algo)
 
-        # Cleaner, professional block layout
         print("\n" + "=" * 55)
         print("Hash Result")
         print("=" * 55)
@@ -75,7 +76,6 @@ def run_metadata():
         metadata = analyze_metadata(file_path)
 
         print("\n[+] Metadata Extracted:")
-        # Left-aligned keys for an even layout
         for key, value in metadata.items():
             print(f"  {key:<20}: {value}")
 
@@ -98,7 +98,6 @@ def run_signature():
         result = verify_signature(file_path)
 
         print("\n[+] Signature Analysis Results:")
-        # Left-aligned keys for symmetry matching metadata
         for key, value in result.items():
             print(f"  {key:<20}: {value}")
 
@@ -163,13 +162,48 @@ def run_ioc():
     input("\nPress Enter to return to the main menu...")
 
 
+def run_timeline():
+    print("\n--- Timeline Generator ---")
+    folder_path = input("Enter the path of the folder to analyze: ").strip()
+
+    try:
+        timeline = generate_timeline(folder_path)
+
+        print("\n" + "=" * 70)
+        print(f"{'Chronological File Activity Timeline':^70}")
+        print("=" * 70)
+
+        if not timeline:
+            print("[!] No files found inside the directory to generate a timeline.")
+        else:
+            for event in timeline:
+                print(f"\nFile Name : {event['File Name']}")
+                print(f"  Created  : {event['Created']}")
+                print(f"  Modified : {event['Modified']}")
+                print(f"  Accessed : {event['Accessed']}")
+            print("\n" + "=" * 70)
+
+    except FileNotFoundError:
+        print(f"[-] Error: The directory '{folder_path}' could not be found.")
+    except NotADirectoryError:
+        print(f"[-] Error: '{folder_path}' is a file, not a directory.")
+    except PermissionError:
+        print(
+            f"[-] Error: Permission denied to scan the directory '{folder_path}'."
+        )
+    except Exception as e:
+        print(f"[-] An unexpected error occurred: {e}")
+
+    input("\nPress Enter to return to the main menu...")
+
+
 # 4. Main Control Loop
 def main():
     print_banner()
 
     while True:
         display_menu()
-        choice = input("Enter your choice (1-5): ").strip()
+        choice = input("Enter your choice (1-6): ").strip()
 
         if choice == "1":
             run_hash()
@@ -180,11 +214,13 @@ def main():
         elif choice == "4":
             run_ioc()
         elif choice == "5":
+            run_timeline()
+        elif choice == "6":
             print("\nThank you for using DFIR Toolkit.")
             break
         else:
             print(
-                "\n[-] Invalid choice. Please select a valid option between 1 and 5."
+                "\n[-] Invalid choice. Please select a valid option between 1 and 6."
             )
 
 
