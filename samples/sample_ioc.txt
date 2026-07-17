@@ -1,0 +1,38 @@
+==========================
+DFIR IOC SAMPLE
+==========================
+
+Employee Name:
+Rohit Sharma
+
+Primary Email:
+rohit.sharma@gmail.com
+
+SOC Team:
+soc-team@company.org
+
+Backup Email:
+security123@yahoo.com
+
+Internal Server:
+192.168.1.15
+
+Google DNS:
+8.8.8.8
+
+Cloudflare DNS:
+1.1.1.1
+
+Website:
+https://www.microsoft.com
+
+Malicious URL:
+http://evil-domain.com/login
+
+Another URL:
+https://github.com
+
+Random Text...
+
+Duplicate Email:
+rohit.sharma@gmail.com
